@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .client-form-action {
+        display: flex;
+        gap: 8px;
+    }
+</style>
+
+<h1>
+    {% if not client_id %}
+        Add a client
+    {% else %}
+        Editing client <strong>{{ client.name }}</strong>
+    {% endif %}
+</h1>
+
+<form 
+    action="{% if client_id %}{% url 'clients:edit' client_id=client_id %}{% else %}{% url 'clients:create' %}{% endif %}"
+    method="post"
+>
+    {% csrf_token %}
+
+    <p>
+        <label for="business_name">
+            Business name: <br />
+            <input id="business_name" type="text" name="business_name" value="{{ client.business_name }}">
+        </label>
+    </p>
+
+    <p>
+        <label for="document">
+            Document: <br />
+            <input id="document" type="text" name="document" value="{{ client.document }}">
+        </label>
+    </p>
+
+    <div class="client-form-action">
+        <button type="button" onclick="window.location.href = '{% url 'clients:list' %}'">Cancel</button>
+        <input type="submit" value="Save">
+    </div>
+</form>
+
+{% endblock content %}
