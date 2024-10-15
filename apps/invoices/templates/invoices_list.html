@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: center;">
+    <h1>
+        Invoices
+    </h1>
+    
+    <a href="{% url 'invoices:create' %}">
+        <button>
+            New invoice
+        </button>
+    </a>
+</div>
+
+<form method="GET" action="{% url 'invoices:list' %}" style="margin-bottom: 24px;">
+    <input type="text" id="search" name="search" placeholder="Search" value="{{ search }}">
+    <button type="button" id="clear-button" onclick="window.location.href='{% url 'invoices:list' %}'">Clear</button>
+    <button type="submit" id="search-button">Search</button>
+</form>
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 24px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    table a {
+        margin-right: 8px;
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    table a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Invoice number
+            </th>
+            <th>
+                Due date
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                {# Actions #}
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if not invoices %}
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    No invoices found.
+                </td>
+            </tr>
+        {% endif %}
+
+        {% for invoice in invoices %}
+            <tr>
+                <td>
+                    {{ invoice.name }}
+                </td>
+                <td>
+                    {{ invoice.due_date }}
+                </td>
+                <td>
+                    {{ invoice.net_amount }}
+                </td>
+                <td>
+                    {{ invoice.status }}
+                </td>
+                <td>
+                    <a href="{% url 'invoices:edit' invoice.id %}">
+                        Edit
+                    </a>
+                    <a href="{% url 'invoices:delete' invoice.id %}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    {# const searchInput = document.getElementById('search');
+    const searchButton = document.getElementById('search-button');
+    const clearButton = document.getElementById('clear-button');
+
+    searchButton.addEventListener('click', () => {
+        if (searchInput.value) {
+            window.location.href = `/invoices/?search=${searchInput.value}`;
+        }
+    });
+
+    searchInput.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
+            if (searchInput.value) {
+                window.location.href = `/invoices/?search=${searchInput.value}`;
+            }
+        }
+    }); #}
+</script>
+{% endblock script %}

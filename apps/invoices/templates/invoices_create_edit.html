@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    {% if not invoice_id %}
+        Add a invoice
+    {% else %}
+        Editing invoice {{ invoice.name }}
+    {% endif %}
+</h1>
+
+<form 
+    action="{% if invoice_id %}{% url 'invoices:edit' invoice_id=invoice_id %}{% else %}{% url 'invoices:create' %}{% endif %}"
+    method="post"
+>
+    {% csrf_token %}
+
+    <p>
+        <label for="client">
+            Client: <br />
+            <input id="client" type="text" name="client" value="{{ invoice.client }}">
+        </label>
+    </p>
+
+    <p>
+        <label for="invoice_number">
+            Invoice number: <br />
+            <input id="invoice_number" type="text" name="invoice_number" value="{{ invoice.invoice_number }}">
+        </label>
+    </p>
+
+    <input type="submit" value="Save">
+</form>
+
+{% endblock content %}

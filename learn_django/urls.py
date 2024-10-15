@@ -22,4 +22,5 @@ handler404 = 'learn_django.views.handler404'
 urlpatterns = [ 
     path('admin/', admin.site.urls),
     path('clients/', include('clients.urls')),
+    path('invoices/', include('invoices.urls')),
 ]
